@@ -6036,7 +6036,239 @@
 
 
 <script>
-  
+  // Declare constants for total chapters
+  const totalGenesisChapters = 50;
+    const totalExodusChapters = 40;
+    const totalOldTestamentChapters = 929;
+    const totalNewTestamentChapters = 260;
+    const totalBibleChapters = 1189;
+
+    // Store user progress in an object
+    let userProgress = {};
+
+    // Function to calculate percentage
+    function calculatePercentage(clickedCount, totalCount) {
+        return ((clickedCount / totalCount) * 100).toFixed(2);
+    }
+
+    function handleGenesisButtonClick(index) {
+        const completed = !userProgress[index + 1];
+        const chapterId = index + 1;
+        const book = 'Genesis'; // Provide the book name
+        toggleGenesisChapterState(index);
+        saveChapterProgress(chapterId, completed, book);
+    }
+
+    function handleExodusButtonClick(index) {
+        const completed = !userProgress[index + 51];
+        const chapterId = index + 51;
+        const book = 'Exodus'; // Provide the book name
+        toggleExodusChapterState(index);
+        saveChapterProgress(chapterId, completed, book);
+    }
+
+
+
+
+
+    // Function to toggle the state of a Genesis chapter button
+    function toggleGenesisChapterState(index) {
+        userProgress[index + 1] = !userProgress[index + 1]; // Chapters are 1-based
+
+        // Update the UI for the clicked button only
+        const buttonElement = document.getElementById(`genesisToggleButton${index + 1}`);
+        buttonElement.classList.toggle("clicked", userProgress[index + 1]);
+
+        updatePercentages();
+    }
+
+    // Function to toggle the state of a Exodus chapter button
+    function toggleExodusChapterState(index) {
+        userProgress[index + 51] = !userProgress[index + 51]; // Chapters are 1-based
+
+        // Update the UI for the clicked button only
+        const buttonElement = document.getElementById(`exodusToggleButton${index + 1}`);
+        buttonElement.classList.toggle("clicked", userProgress[index + 51]);
+
+        updatePercentages();
+    }
+
+    
+
+
+// Function to save chapter progress to the server
+function saveChapterProgress(chapterId, completed, book) {
+    // Prepare the data to send
+    const data = {
+        chapter_id: chapterId, // This is a unique identifier for each chapter, e.g., 'genesis1' or 'exodus1'
+        completed: completed, // This indicates whether the chapter is completed (true) or not (false)
+        book: book,
+    };
+
+    // Send the data as JSON to the server using the Fetch API
+    fetch('./save_progress.php', {
+        method: 'POST', // Use the HTTP POST method to send data to the server
+        headers: {
+            'Content-Type': 'application/json', // Specify that the data being sent is in JSON format
+        },
+        body: JSON.stringify(data), // Convert the data object to a JSON string and send it as the request body
+    })
+    .then((response) => response.json()) // Parse the server's response as JSON
+    .then((data) => {
+        if (data.success) {
+            // If the server responds with success, it means the data was saved successfully
+            console.log('Chapter progress saved successfully');
+            userProgress = data.userProgress; // Update the user's progress with the server's response
+            setButtonStates(); // Update button states based on the updated user progress
+            updatePercentages(); // Update percentages based on fetched data
+        } else {
+            // If the server responds with an error, log the error message
+            console.error('Error saving chapter progress:', data.error);
+        }
+    })
+    .catch((error) => {
+        // If there is a network error or any other issue, catch and log the error
+        console.error('Error saving chapter progress:', error);
+    });
+}
+
+
+
+    // Function to update UI with percentages
+    function updatePercentages() {
+        const genesisClickedCount = Object.values(userProgress).filter((value, index) => index < 50 && value).length;
+        const exodusClickedCount = Object.values(userProgress).filter((value, index) => index >= 50 && index < 90 && value).length;
+        const oldTestamentClickedCount = genesisClickedCount + exodusClickedCount;
+        const newTestamentClickedCount = genesisClickedCount;
+        const entireBibleClickedCount = oldTestamentClickedCount + newTestamentClickedCount;
+
+        const genesisPercentage = calculatePercentage(genesisClickedCount, totalGenesisChapters);
+        const exodusPercentage = calculatePercentage(exodusClickedCount, totalExodusChapters);
+        const oldTestamentPercentage = calculatePercentage(oldTestamentClickedCount, totalOldTestamentChapters);
+        const newTestamentPercentage = calculatePercentage(newTestamentClickedCount, totalNewTestamentChapters);
+        const entireBiblePercentage = calculatePercentage(entireBibleClickedCount, totalBibleChapters);
+
+        // Update the UI without recalculating percentages
+
+            document.getElementById("genesisPercentage").textContent = `${genesisPercentage}%`;
+            document.getElementById("exodusPercentage").textContent = `${exodusPercentage}%`;
+            document.getElementById("oldTestamentPercentageElement1").textContent = `${oldTestamentPercentage}%`;
+            document.getElementById("oldTestamentPercentageElement2").textContent = `${oldTestamentPercentage}%`;
+            document.getElementById("newTestamentPercentageElement1").textContent = `${newTestamentPercentage}%`;
+            document.getElementById("newTestamentPercentageElement2").textContent = `${newTestamentPercentage}%`;
+            document.getElementById("entireBiblePercentageElement").textContent = `${entireBiblePercentage}%`;
+
+            // Update the genesis progress circle
+            const progressCircleGenesis = document.querySelector(".genesisprog");
+            const circumference = 2 * Math.PI * 140; // Radius is 90 (as in your SVG)
+            const strokeDashArrayValueGenesis = (circumference * (genesisPercentage / 100));
+            progressCircleGenesis.style.strokeDasharray = `${strokeDashArrayValueGenesis} ${circumference - strokeDashArrayValueGenesis}`;
+
+            // update the exodus progress circle
+            const progressCircleExodus = document.querySelector(".exodusprog");
+            const strokeDashArrayValueExodus = (circumference * (exodusPercentage / 100));
+            progressCircleExodus.style.strokeDasharray = `${strokeDashArrayValueExodus} ${circumference - strokeDashArrayValueExodus}`;
+
+
+            // Update the old testament progress circle
+            const progressCircleOldTestament = document.querySelector(".oldtestamentprog");
+            const strokeDashArrayValueOldTestament = (circumference * (oldTestamentPercentage / 100));
+            progressCircleOldTestament.style.strokeDasharray = `${strokeDashArrayValueOldTestament} ${circumference - strokeDashArrayValueOldTestament}`;
+
+            // Update the old testament progress circle
+            const progressCircleOldTestament1 = document.querySelector(".oldtestamentprog1");
+            const circumferencehp = 2 * Math.PI * 120; // Radius is 90 (as in your SVG)
+            const strokeDashArrayValueOldTestament1 = (circumferencehp * (oldTestamentPercentage / 100));
+            progressCircleOldTestament1.style.strokeDasharray = `${strokeDashArrayValueOldTestament1} ${circumferencehp - strokeDashArrayValueOldTestament1}`;
+
+            //update the new testament progress circle
+            const progressCircleNewTestament1 = document.querySelector(".newtestamentprog1");
+            const strokeDashArrayValueNewTestament1 = (circumferencehp * (newTestamentPercentage / 100));
+            progressCircleNewTestament1.style.strokeDasharray = `${strokeDashArrayValueNewTestament1} ${circumferencehp - strokeDashArrayValueNewTestament1}`;
+
+            // Update the new testament progress circle
+            const progressCircleNewTestament = document.querySelector(".newtestamentprog");
+            const strokeDashArrayValueNewTestament = (circumference * (newTestamentPercentage / 100));
+            progressCircleNewTestament.style.strokeDasharray = `${strokeDashArrayValueNewTestament} ${circumference - strokeDashArrayValueNewTestament}`;
+
+            // Update the entire bible progress circle
+            const progressCircleEntireBible = document.querySelector(".entirebibleprog");
+            const circumferenceeb = 2 * Math.PI * 180; // Radius is 90 (as in your SVG)
+            const strokeDashArrayValueEntireBible = (circumferenceeb * (entireBiblePercentage / 100));
+            progressCircleEntireBible.style.strokeDasharray = `${strokeDashArrayValueEntireBible} ${circumferenceeb - strokeDashArrayValueEntireBible}`;
+        }
+    
+
+    // Fetch user progress and update button states
+    function fetchUserProgressAndSetButtons() {
+        // Simulate an AJAX request to fetch user progress
+        // Make sure to replace this with an actual AJAX call to your fetch_progress.php file
+        fetch('./fetch_progress.php')
+            .then((response) => response.json())
+            .then((data) => {
+                // Assuming a successful response from the server, data will contain user progress
+                userProgress = data;
+                setButtonStates();
+                updatePercentages(); // Update percentages based on fetched data
+            })
+            .catch((error) => {
+                console.error('Error fetching user progress:', error);
+            });
+    }
+
+
+
+    // Call the function to fetch user progress and set button states
+    fetchUserProgressAndSetButtons();
+
+        // Function to set button states based on user progress
+        function setButtonStates() {
+            // Update button states based on user progress
+            for (let i = 0; i < totalGenesisChapters; i++) {
+                const buttonElement = document.getElementById(`genesisToggleButton${i + 1}`);
+                const chapterCompleted = userProgress[i + 1];
+
+                if (chapterCompleted) {
+                    buttonElement.classList.add("clicked", "completed"); // Add both classes to completed buttons
+                } else {
+                    buttonElement.classList.remove("clicked", "completed"); // Remove both classes from non-completed buttons
+                }
+            }
+
+            for (let i = 0; i < totalExodusChapters; i++) {
+                const buttonElement = document.getElementById(`exodusToggleButton${i + 1}`);
+                const chapterCompleted = userProgress[i + 51];
+
+                if (chapterCompleted) {
+                    buttonElement.classList.add("clicked", "completed"); // Add both classes to completed buttons
+                } else {
+                    buttonElement.classList.remove("clicked", "completed"); // Remove both classes from non-completed buttons
+                }
+            }
+
+
+        }
+
+    
+
+
+
+
+    // Add event listeners to Genesis chapter buttons
+    for (let i = 0; i < totalGenesisChapters; i++) {
+        const buttonElement = document.getElementById(`genesisToggleButton${i + 1}`);
+        buttonElement.addEventListener("click", () => {
+            handleGenesisButtonClick(i);
+        });
+    }
+
+    // Add event listeners to Exodus chapter buttons
+    for (let i = 0; i < totalExodusChapters; i++) {
+        const buttonElement = document.getElementById(`exodusToggleButton${i + 1}`);
+        buttonElement.addEventListener("click", () => {
+            handleExodusButtonClick(i);
+        });
+    }
 
 
     
