@@ -1,0 +1,39 @@
+             const progressCircleGenesis = document.querySelector(".genesisprog");
+            const circumference = 2 * Math.PI * 140; // Radius is 90 (as in your SVG)
+            const strokeDashArrayValueGenesis = (circumference * (genesisPercentage / 100));
+            progressCircleGenesis.style.strokeDasharray = `${strokeDashArrayValueGenesis} ${circumference - strokeDashArrayValueGenesis}`;
+
+            // update the exodus progress circle
+            const progressCircleExodus = document.querySelector(".exodusprog");
+            const strokeDashArrayValueExodus = (circumference * (genesisPercentage / 100));
+            progressCircleExodus.style.strokeDasharray = `${strokeDashArrayValueExodus} ${circumference - strokeDashArrayValueExodus}`;
+
+
+            // Update the old testament progress circle
+            const progressCircleOldTestament = document.querySelector(".oldtestamentprog");
+            const strokeDashArrayValueOldTestament = (circumference * (oldTestamentPercentage / 100));
+            progressCircleOldTestament.style.strokeDasharray = `${strokeDashArrayValueOldTestament} ${circumference - strokeDashArrayValueOldTestament}`;
+
+            // Update the old testament progress circle
+            const progressCircleOldTestament1 = document.querySelector(".oldtestamentprog1");
+            const circumferencehp = 2 * Math.PI * 120; // Radius is 90 (as in your SVG)
+            const strokeDashArrayValueOldTestament1 = (circumferencehp * (oldTestamentPercentage / 100));
+            progressCircleOldTestament1.style.strokeDasharray = `${strokeDashArrayValueOldTestament1} ${circumferencehp - strokeDashArrayValueOldTestament1}`;
+
+            //update the new testament progress circle
+            const progressCircleNewTestament1 = document.querySelector(".newtestamentprog1");
+            const strokeDashArrayValueNewTestament1 = (circumferencehp * (newTestamentPercentage / 100));
+            progressCircleNewTestament1.style.strokeDasharray = `${strokeDashArrayValueNewTestament1} ${circumferencehp - strokeDashArrayValueNewTestament1}`;
+
+            // Update the new testament progress circle
+            const progressCircleNewTestament = document.querySelector(".newtestamentprog");
+            const strokeDashArrayValueNewTestament = (circumference * (newTestamentPercentage / 100));
+            progressCircleNewTestament.style.strokeDasharray = `${strokeDashArrayValueNewTestament} ${circumference - strokeDashArrayValueNewTestament}`;
+
+            // Update the entire bible progress circle
+            const progressCircleEntireBible = document.querySelector(".entirebibleprog");
+            const circumferenceeb = 2 * Math.PI * 180; // Radius is 90 (as in your SVG)
+            const strokeDashArrayValueEntireBible = (circumferenceeb * (entireBiblePercentage / 100));
+            progressCircleEntireBible.style.strokeDasharray = `${strokeDashArrayValueEntireBible} ${circumferenceeb - strokeDashArrayValueEntireBible}`;
+
+        

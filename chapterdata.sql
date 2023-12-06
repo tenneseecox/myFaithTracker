@@ -1,0 +1,29 @@
+-- Purpose: Insert chapter data into the chapters table.
+INSERT INTO chapters (book_id, chapter_number)
+SELECT id AS book_id, chapter_number
+FROM books
+CROSS JOIN (
+    SELECT 1 AS chapter_number UNION ALL
+    SELECT 2 UNION ALL
+    SELECT 3 UNION ALL
+    SELECT 4 UNION ALL
+    SELECT 5 UNION ALL
+    SELECT 6 UNION ALL
+    SELECT 7 UNION ALL
+    SELECT 8 UNION ALL
+    SELECT 9 UNION ALL
+    SELECT 10 UNION ALL
+    SELECT 11 UNION ALL
+    SELECT 12 UNION ALL
+    SELECT 13 UNION ALL
+    SELECT 14 UNION ALL
+    SELECT 15 UNION ALL
+    SELECT 16 UNION ALL
+    SELECT 17 UNION ALL
+    SELECT 18 UNION ALL
+    SELECT 19 UNION ALL
+    SELECT 20 UNION ALL
+    SELECT 21 UNION ALL
+    SELECT 22
+) AS chapter_numbers
+WHERE name = 'revelation';

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Account</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="logo">
+        <a href="bibletracker.html">
+            <div class="logo">
+                <img src="/flat-color-icons_reading.png">
+            </div>
+        </a>
+    </div>
+    <header class="header">
+        Create Account
+    </header>
+    <div class="create-account">
+        <form action="create-account.php" method="post" novalidate>
+            
+            <div>
+            <input type="text" name="firstName" placeholder="First Name">  
+            </div>
+            
+            <div>
+            <input type="text" name="lastName" placeholder="Last Name">
+            </div>
+            
+            <div>
+            <input type="email" name="email" placeholder="Email">
+            </div>
+
+            <div>
+            <input type="password" name="password" placeholder="Password">
+            </div>
+
+            <div>
+            <input type="password" name="confirm_password" placeholder="Confirm Password">
+            </div>
+           
+            <div>
+            <input type="submit" value="Create Account" class="button">
+            </div>
+        </form>
+        <a href="/sign-in.html"><p>Already have an account? Sign in here</p></a>
+    </div>
+
+   
+</body>
+</html>

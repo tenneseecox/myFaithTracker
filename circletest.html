@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<div class="progress">
+    <svg class="progress-circle" width="200px" height="200px" xmlns="http://www.w3.org/2000/svg">
+	    <circle class="progress-circle-back"
+		        cx="80" cy="80" r="74"></circle>
+        <circle class="progress-circle-prog"
+                cx="80" cy="80" r="74"></circle>
+    </svg>
+	  <div class="progress-text" data-progress="0">0%</div>
+</div>	
+</html>
+
+<script>
+    var progress = document.querySelector('.progress');
+    var progressCircle = progress.querySelector('.progress-circle-prog');
+    var progressText = progress.querySelector('.progress-text');
+    var radius = progressCircle.r.baseVal.value;
+    var circumference = radius * 2 * Math.PI;
+    var offset = circumference - 0 / 100 * circumference;
+    var progress_value = 50;
+    progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+    progressCircle.style.strokeDashoffset = offset;
+    function setProgress(percent) {
+        var offset = circumference - percent / 100 * circumference;
+        progressCircle.style.strokeDashoffset = offset; 
+        progressText.textContent = percent + '%';
+    }
+    setProgress(progress_value);
+   
+
+
+
+
+    </script>
+
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lato', sans-serif;
+}
+
+.progress {
+    position: absolute;   
+    height: 160px;
+    width: 160px;
+    cursor: pointer;
+    top: 50%;
+    left: 50%;
+    margin: -80px 0 0 -80px;
+}
+
+.progress-circle {
+  transform: rotate(-90deg);
+	margin-top: -40px;
+}
+
+.progress-circle-back {
+	fill: none; 
+	stroke: #D2D2D2;
+	stroke-width:10px;
+}
+
+.progress-circle-prog {
+	fill: none; 
+	stroke: #7E3451;
+	stroke-width: 10px;  
+	stroke-dasharray: 0 999;    
+	stroke-dashoffset: 0px;
+    transition: stroke-dasharray 0.7s linear 0s;
+}
+
+.progress-text {
+	width: 100%;
+	position: absolute;
+	top: 60px;
+	text-align: center;
+	font-size: 2em;
+}
+
+</style>
